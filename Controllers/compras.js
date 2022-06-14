@@ -22,26 +22,40 @@ const listarCompras = async (req, res) => {
       },
       { nome: "feijao", qtd: 0 },
     ];
-    const conjunto = [
+    const conjuntos = [
       {
-        leiteCafe: 0,
+        nome: "leiteCafe",
+        quantidade: 0,
+        suporte: 0,
+        resistencia: 0,
       },
       {
-        leiteCerveja: 0,
+        nome: "leiteCerveja",
+        quantidade: 0,
+        suporte: 0,
+        resistencia: 0,
       },
-      { leitePao: 0 },
+      { nome: "leitePao", quantidade: 0, suporte: 0, resistencia: 0 },
       {
-        leiteManteiga: 0,
+        nome: "leiteManteiga",
+        quantidade: 0,
+        suporte: 0,
+        resistencia: 0,
       },
       {
-        cafePao: 0,
+        nome: "cafePao",
+        quantidade: 0,
+        suporte: 0,
+        resistencia: 0,
       },
-      { cafeManteiga: 0 },
+      { nome: "cafeManteiga", quantidade: 0, suporte: 0, resistencia: 0 },
       {
-        cervejaPao: 0,
+        nome: "cervejaPao",
+        quantidade: 0,
+        suporte: 0,
+        resistencia: 0,
       },
-      { paoManteiga: 0 },
-      { leiteArroz: 0 },
+      { nome: "paoManteiga", quantidade: 0, suporte: 0, resistencia: 0 },
     ];
 
     const { rows: compras } = await conexao.query(
@@ -49,44 +63,62 @@ const listarCompras = async (req, res) => {
     );
 
     for (let i = 0; i < compras.length; i++) {
-      let produtos = Object.getOwnPropertyNames(compras[i]);
-      // for(let produto of produtos)
-
-      console.log("+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+");
-      let verificador = compras[i].leite
-        ? itens[0].qtd++
-        : (itens[0].qtd = itens[0].qtd);
-      verificador = compras[i].cafe
-        ? itens[1].qtd++
-        : (itens[1].qtd = itens[1].qtd);
-      verificador = compras[i].cerveja
-        ? itens[2].qtd++
-        : (itens[2].qtd = itens[2].qtd);
-      verificador = compras[i].pao
-        ? itens[3].qtd++
-        : (itens[3].qtd = itens[3].qtd);
-      verificador = compras[i].manteiga
-        ? itens[4].qtd++
-        : (itens[4].qtd = itens[4].qtd);
-      verificador = compras[i].arroz
-        ? itens[5].qtd++
-        : (itens[5].qtd = itens[5].qtd);
-      verificador = compras[i].feijao
-        ? itens[6].qtd++
-        : (itens[6].qtd = itens[6].qtd);
-      // for (let j = 0; j < itens.length; j++) {}
-      // if (produtos[j] == itens[j].nome) {
-      //   // console.log("Que isso, meu fio. Calma!");
-      // }
+      //  Verificar Juncoes
+      if (compras[i].leite) {
+        itens[0].qtd++;
+        if (compras[i].cafe) {
+          conjuntos[0].quantidade++;
+        }
+        if (compras[i].cerveja) {
+          conjuntos[1].quantidade++;
+        }
+        if (compras[i].pao) {
+          conjuntos[2].quantidade++;
+        }
+        if (compras[i].manteiga) {
+          conjuntos[3].quantidade++;
+        }
+      }
+      if (compras[i].cafe) {
+        itens[1].qtd++;
+        if (compras[i].pao) {
+          conjuntos[4].quantidade++;
+        }
+        if (compras[i].manteiga) {
+          conjuntos[5].quantidade++;
+        }
+      }
+      if (compras[i].cerveja) {
+        itens[2].qtd++;
+      }
+      if (compras[i].pao) {
+        itens[3].qtd++;
+        if (compras[i].cerveja) {
+          conjuntos[6].quantidade++;
+        }
+        if (compras[i].manteiga) {
+          conjuntos[7].quantidade++;
+        }
+      }
+      if (compras[i].manteiga) {
+        itens[4].qtd++;
+      }
+      if (compras[i].arroz) {
+        itens[5].qtd++;
+      }
+      if (compras[i].feijao) {
+        itens[6].qtd++;
+      }
     }
-    console.log(produtos);
-    console.log(itens[0].qtd);
-    console.log(itens[1].qtd);
-    console.log(itens[2].qtd);
-    console.log(itens[3].qtd);
-    console.log(itens[4].qtd);
-    console.log(itens[5].qtd);
-    console.log(itens[6].qtd);
+    for (let conjunto of conjuntos) {
+      conjunto.suporte = parseFloat(conjunto.quantidade / compras.length);
+      console.log(conjunto);
+    }
+    console.log("--- Quantidade Produtos ---");
+    for (const item of itens) {
+      console.log(item.nome + ": " + item.qtd);
+    }
+
     return res.status(200).json(compras);
   } catch (error) {
     return res.status().json(error.message);
