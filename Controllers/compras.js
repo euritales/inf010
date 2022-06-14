@@ -27,35 +27,35 @@ const listarCompras = async (req, res) => {
         nome: "leiteCafe",
         quantidade: 0,
         suporte: 0,
-        resistencia: 0,
+        confianca: 0,
       },
       {
         nome: "leiteCerveja",
         quantidade: 0,
         suporte: 0,
-        resistencia: 0,
+        confianca: 0,
       },
-      { nome: "leitePao", quantidade: 0, suporte: 0, resistencia: 0 },
+      { nome: "leitePao", quantidade: 0, suporte: 0, confianca: 0 },
       {
         nome: "leiteManteiga",
         quantidade: 0,
         suporte: 0,
-        resistencia: 0,
+        confianca: 0,
       },
       {
         nome: "cafePao",
         quantidade: 0,
         suporte: 0,
-        resistencia: 0,
+        confianca: 0,
       },
-      { nome: "cafeManteiga", quantidade: 0, suporte: 0, resistencia: 0 },
+      { nome: "cafeManteiga", quantidade: 0, suporte: 0, confianca: 0 },
       {
         nome: "cervejaPao",
         quantidade: 0,
         suporte: 0,
-        resistencia: 0,
+        confianca: 0,
       },
-      { nome: "paoManteiga", quantidade: 0, suporte: 0, resistencia: 0 },
+      { nome: "paoManteiga", quantidade: 0, suporte: 0, confianca: 0 },
     ];
 
     const { rows: compras } = await conexao.query(
