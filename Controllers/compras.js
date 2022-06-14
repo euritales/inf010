@@ -7,55 +7,86 @@ const listarCompras = async (req, res) => {
     const itens = [
       {
         nome: "leite",
-        qtd: 0,
+        quantidade: 0,
       },
-      { nome: "cafe", qtd: 0 },
-      { nome: "cerveja", qtd: 0 },
-      { nome: "pao", qtd: 0 },
+      { nome: "cafe", quantidade: 0 },
+      { nome: "cerveja", quantidade: 0 },
+      { nome: "pao", quantidade: 0 },
       {
         nome: "manteiga",
-        qtd: 0,
+        quantidade: 0,
       },
       {
         nome: "arroz",
-        qtd: 0,
+        quantidade: 0,
       },
-      { nome: "feijao", qtd: 0 },
+      { nome: "feijao", quantidade: 0 },
     ];
     const conjuntos = [
       {
         nome: "leiteCafe",
+        antecedente: "leite",
+        consequente: "cafe",
         quantidade: 0,
         suporte: 0,
         confianca: 0,
       },
       {
         nome: "leiteCerveja",
+        antecedente: "leite",
+        consequente: "cerveja",
         quantidade: 0,
         suporte: 0,
         confianca: 0,
       },
-      { nome: "leitePao", quantidade: 0, suporte: 0, confianca: 0 },
+      {
+        nome: "leitePao",
+        antecedente: "leite",
+        consequente: "pao",
+        quantidade: 0,
+        suporte: 0,
+        confianca: 0,
+      },
       {
         nome: "leiteManteiga",
+        antecedente: "leite",
+        consequente: "manteiga",
         quantidade: 0,
         suporte: 0,
         confianca: 0,
       },
       {
         nome: "cafePao",
+        antecedente: "cafe",
+        consequente: "pao",
         quantidade: 0,
         suporte: 0,
         confianca: 0,
       },
-      { nome: "cafeManteiga", quantidade: 0, suporte: 0, confianca: 0 },
+      {
+        nome: "cafeManteiga",
+        antecedente: "cafe",
+        consequente: "manteiga",
+        quantidade: 0,
+        suporte: 0,
+        confianca: 0,
+      },
       {
         nome: "cervejaPao",
+        antecedente: "cerveja",
+        consequente: "pao",
         quantidade: 0,
         suporte: 0,
         confianca: 0,
       },
-      { nome: "paoManteiga", quantidade: 0, suporte: 0, confianca: 0 },
+      {
+        nome: "paoManteiga",
+        antecedente: "pao",
+        consequente: "manteiga",
+        quantidade: 0,
+        suporte: 0,
+        confianca: 0,
+      },
     ];
 
     const { rows: compras } = await conexao.query(
@@ -65,7 +96,7 @@ const listarCompras = async (req, res) => {
     for (let i = 0; i < compras.length; i++) {
       //  Verificar Juncoes
       if (compras[i].leite) {
-        itens[0].qtd++;
+        itens[0].quantidade++;
         if (compras[i].cafe) {
           conjuntos[0].quantidade++;
         }
@@ -80,7 +111,7 @@ const listarCompras = async (req, res) => {
         }
       }
       if (compras[i].cafe) {
-        itens[1].qtd++;
+        itens[1].quantidade++;
         if (compras[i].pao) {
           conjuntos[4].quantidade++;
         }
@@ -89,10 +120,10 @@ const listarCompras = async (req, res) => {
         }
       }
       if (compras[i].cerveja) {
-        itens[2].qtd++;
+        itens[2].quantidade++;
       }
       if (compras[i].pao) {
-        itens[3].qtd++;
+        itens[3].quantidade++;
         if (compras[i].cerveja) {
           conjuntos[6].quantidade++;
         }
@@ -101,22 +132,43 @@ const listarCompras = async (req, res) => {
         }
       }
       if (compras[i].manteiga) {
-        itens[4].qtd++;
+        itens[4].quantidade++;
       }
       if (compras[i].arroz) {
-        itens[5].qtd++;
+        itens[5].quantidade++;
       }
       if (compras[i].feijao) {
-        itens[6].qtd++;
+        itens[6].quantidade++;
       }
     }
     for (let conjunto of conjuntos) {
       conjunto.suporte = parseFloat(conjunto.quantidade / compras.length);
-      console.log(conjunto);
-    }
-    console.log("--- Quantidade Produtos ---");
-    for (const item of itens) {
-      console.log(item.nome + ": " + item.qtd);
+      for (const item of itens) {
+        if (conjunto.antecedente == item.nome) {
+          console.log("\n|- - - - - - - - - - - - - - - - - - - - -|");
+          console.log("|  Antecedente: " + conjunto.antecedente);
+          console.log("|  Consequente: " + conjunto.consequente);
+          console.log("|  Suporte(%): " + conjunto.suporte * 100);
+          console.log(
+            "|  Confianca(%): " +
+              parseFloat((conjunto.quantidade / item.quantidade) * 100).toFixed(
+                2
+              )
+          );
+        }
+        if (conjunto.consequente == item.nome) {
+          console.log("\n|- - - - - - - - - - - - - - - - - - - - -|");
+          console.log("|  Antecedente: " + conjunto.consequente);
+          console.log("|  Consequente: " + conjunto.antecedente);
+          console.log("|  Suporte(%): " + conjunto.suporte * 100);
+          console.log(
+            "|  Confianca(%): " +
+              parseFloat((conjunto.quantidade / item.quantidade) * 100).toFixed(
+                2
+              )
+          );
+        }
+      }
     }
 
     return res.status(200).json(compras);
