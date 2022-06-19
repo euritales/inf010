@@ -1,4 +1,5 @@
 const conexao = require("../connection");
+const fs = require("fs");
 
 const listarCompras = async (req, res) => {
   const query = `select count(*) from compra_associacao where $1 = true`;
@@ -89,6 +90,15 @@ const listarCompras = async (req, res) => {
       },
     ];
 
+    // const detalhes = [
+    //   {
+    //     antecedente: "",
+    //     consequente:'',
+    //     suporte: null,
+    //     confianca: null
+    //   }
+    // ]
+
     const { rows: compras } = await conexao.query(
       "select leite, cafe, cerveja, pao, manteiga, arroz, feijao from compra_associacao"
     );
@@ -144,28 +154,62 @@ const listarCompras = async (req, res) => {
     for (let conjunto of conjuntos) {
       conjunto.suporte = parseFloat(conjunto.quantidade / compras.length);
       for (const item of itens) {
+        const detalhe = {
+          antecedente: "",
+          consequente: "",
+          suporte: 0,
+          confianca: 0,
+        };
         if (conjunto.antecedente == item.nome) {
           console.log("\n|- - - - - - - - - - - - - - - - - - - - -|");
           console.log("|  Antecedente: " + conjunto.antecedente);
+          detalhe.antecedente = conjunto.antecedente;
           console.log("|  Consequente: " + conjunto.consequente);
+          detalhe.consequente = conjunto.consequente;
           console.log("|  Suporte(%): " + conjunto.suporte * 100);
+          detalhe.suporte = conjunto.suporte * 100;
           console.log(
             "|  Confianca(%): " +
               parseFloat((conjunto.quantidade / item.quantidade) * 100).toFixed(
                 2
               )
           );
+          detalhe.confianca = parseFloat(
+            (conjunto.quantidade / item.quantidade) * 100
+          ).toFixed(2);
+
+          fs.writeFile(
+            `./resultados/conjunto-${detalhe.antecedente}x${detalhe.consequente}.txt`,
+            `Antecedente:${detalhe.antecedente} \nConsequente: ${detalhe.consequente} \nSuporte: ${detalhe.suporte} \nConfiança: ${detalhe.confianca}`,
+            () => {
+              console.log("Cadastrado!");
+            }
+          );
         }
         if (conjunto.consequente == item.nome) {
           console.log("\n|- - - - - - - - - - - - - - - - - - - - -|");
           console.log("|  Antecedente: " + conjunto.consequente);
+          detalhe.antecedente = conjunto.consequente;
           console.log("|  Consequente: " + conjunto.antecedente);
+          detalhe.consequente = conjunto.antecedente;
           console.log("|  Suporte(%): " + conjunto.suporte * 100);
+          detalhe.suporte = conjunto.suporte * 100;
           console.log(
             "|  Confianca(%): " +
               parseFloat((conjunto.quantidade / item.quantidade) * 100).toFixed(
                 2
               )
+          );
+          detalhe.confianca = parseFloat(
+            (conjunto.quantidade / item.quantidade) * 100
+          ).toFixed(2);
+
+          fs.writeFile(
+            `./resultados/conjunto-${detalhe.antecedente}x${detalhe.consequente}.txt`,
+            `Antecedente:${detalhe.antecedente} \nConsequente: ${detalhe.consequente} \nSuporte: ${detalhe.suporte} \nConfiança: ${detalhe.confianca}`,
+            () => {
+              console.log("Cadastrado!");
+            }
           );
         }
       }
@@ -177,30 +221,6 @@ const listarCompras = async (req, res) => {
   }
 };
 
-// --- --- CRUD --- ---
-
-// const obterCompra = async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const { rows: compra } = await conexao.query(
-//       "select count() $1 from compra_associacao where arroz = true ",
-//       [id]
-//     );
-
-//     return res.status(200).json(compra);
-//   } catch (error) {
-//     return res.status().json(error.message);
-//   }
-// };
-// const cadastrarCompra = async (req, res) => {};
-// const atualizarCompra = async (req, res) => {};
-// const deletarCompra = async (req, res) => {};
-
 module.exports = {
   listarCompras,
-  //   obterCompra,
-  //   cadastrarCompra,
-  //   atualizarCompra,
-  //   deletarCompra,
 };

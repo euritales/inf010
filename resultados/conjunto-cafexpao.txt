@@ -1,0 +1,4 @@
+Antecedente:cafe 
+Consequente: pao 
+Suporte: 30 
+Confiança: 100.00

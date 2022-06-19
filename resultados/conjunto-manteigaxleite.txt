@@ -1,0 +1,4 @@
+Antecedente:manteiga 
+Consequente: leite 
+Suporte: 20 
+Confiança: 40.00

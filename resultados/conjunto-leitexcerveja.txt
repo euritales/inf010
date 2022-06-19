@@ -1,0 +1,4 @@
+Antecedente:leite 
+Consequente: cerveja 
+Suporte: 10 
+Confiança: 50.00

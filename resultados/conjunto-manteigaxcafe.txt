@@ -1,0 +1,4 @@
+Antecedente:manteiga 
+Consequente: cafe 
+Suporte: 30 
+Confiança: 60.00

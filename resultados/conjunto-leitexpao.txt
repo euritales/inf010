@@ -1,0 +1,4 @@
+Antecedente:leite 
+Consequente: pao 
+Suporte: 20 
+Confiança: 100.00
