@@ -1,4 +1,4 @@
 Antecedente:pao 
 Consequente: cerveja 
-Suporte: 10 
-Confiança: 20.00
+Suporte(%): 10.00 
+Confiança(%): 20.00

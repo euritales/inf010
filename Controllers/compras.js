@@ -152,7 +152,7 @@ const listarCompras = async (req, res) => {
         if (conjunto.antecedente == item.nome) {
           detalhe.antecedente = conjunto.antecedente;
           detalhe.consequente = conjunto.consequente;
-          detalhe.suporte = conjunto.suporte * 100;
+          detalhe.suporte = (conjunto.suporte * 100).toFixed(2);
           detalhe.confianca = parseFloat(
             (conjunto.quantidade / item.quantidade) * 100
           ).toFixed(2);
@@ -161,7 +161,7 @@ const listarCompras = async (req, res) => {
         if (conjunto.consequente == item.nome) {
           detalhe.antecedente = conjunto.consequente;
           detalhe.consequente = conjunto.antecedente;
-          detalhe.suporte = conjunto.suporte * 100;
+          detalhe.suporte = (conjunto.suporte * 100).toFixed(2);
           detalhe.confianca = parseFloat(
             (conjunto.quantidade / item.quantidade) * 100
           ).toFixed(2);
@@ -183,7 +183,7 @@ module.exports = {
 function relatorio(props) {
   fs.writeFile(
     `./conjuntos/${props.antecedente}-${props.consequente}.txt`,
-    `Antecedente:${props.antecedente} \nConsequente: ${props.consequente} \nSuporte: ${props.suporte} \nConfiança: ${props.confianca}`,
+    `Antecedente:${props.antecedente} \nConsequente: ${props.consequente} \nSuporte(%): ${props.suporte} \nConfiança(%): ${props.confianca}`,
     () => {
       return "Cadastrado!";
     }

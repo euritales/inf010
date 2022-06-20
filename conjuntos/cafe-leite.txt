@@ -1,4 +1,4 @@
 Antecedente:cafe 
 Consequente: leite 
-Suporte: 10 
-Confiança: 33.33
+Suporte(%): 10.00 
+Confiança(%): 33.33

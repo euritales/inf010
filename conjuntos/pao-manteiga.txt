@@ -1,4 +1,4 @@
 Antecedente:pao 
 Consequente: manteiga 
-Suporte: 40 
-Confiança: 80.00
+Suporte(%): 40.00 
+Confiança(%): 80.00
